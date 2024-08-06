@@ -76,8 +76,8 @@ def main():
             task_manager.display_tasks()
         elif user_input == 4:
             print('Goodbye!')
-            # break
-            task_manager.load_tasks()
+            break
+
         else:
             print('Type numbers from 1 - 4')
 
