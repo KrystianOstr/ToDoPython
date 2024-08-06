@@ -9,10 +9,12 @@ class Task:
 class TaskManager:
     def __init__(self):
         self.tasks = []
+        self.load_tasks()
 
     def add_task(self, title, description):
         new_task = Task(title, description)
         self.tasks.append(new_task)
+        self.save_tasks()
 
     def remove_task(self, title):
 
@@ -20,6 +22,8 @@ class TaskManager:
             if task.title == title:
                 self.tasks.remove(task)
                 print(f'Task {title} removed')
+                self.save_tasks()
+
                 break
         else:
                 print(f'Task doesn`t exists')
@@ -33,6 +37,23 @@ class TaskManager:
         else:
             print(f'There is no task to display.')
 
+    def save_tasks(self):
+        with open('tasks.txt', 'w') as file:
+            for task in self.tasks:
+                file.write(f'{task.title},{task.description} \n')
+
+    def load_tasks(self):
+        try:
+            with open('tasks.txt', 'r') as file:
+                for line in file:
+                    title, description = line.strip().split(',')
+                    task = Task(title, description)
+                    self.tasks.append(task)
+
+        except FileNotFoundError:
+            print('File doesn`t exists')
+            
+            
 
 def main():
     task_manager = TaskManager()
@@ -55,7 +76,8 @@ def main():
             task_manager.display_tasks()
         elif user_input == 4:
             print('Goodbye!')
-            break
+            # break
+            task_manager.load_tasks()
         else:
             print('Type numbers from 1 - 4')
 
